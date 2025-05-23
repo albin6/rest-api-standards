@@ -210,3 +210,72 @@ const port = process.env.PORT;
 
 ---
 
+## 📌 Additional Production-Level Practices
+
+### ✅ Rate Limiting and Throttling
+
+Prevent abuse and limit repeated requests:
+
+```js
+const rateLimit = require("express-rate-limit");
+const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
+app.use(limiter);
+```
+
+### ✅ Input Sanitization to Prevent Injection
+
+Use libraries like `express-validator`, `xss-clean`:
+
+```bash
+npm install express-validator xss-clean
+```
+
+```js
+const xss = require("xss-clean");
+app.use(xss());
+```
+
+### ✅ Use HTTPS
+
+Always use HTTPS in production to encrypt data in transit.
+
+### ✅ Centralized Error Handling
+
+Create a global error handler to catch and respond to errors consistently:
+
+```js
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ success: false, error: { message: "Server error" } });
+});
+```
+
+### ✅ Graceful Shutdown
+
+Close connections properly before shutting down the server:
+
+```js
+process.on("SIGTERM", () => {
+  server.close(() => {
+    console.log("Process terminated");
+  });
+});
+```
+
+### ✅ Logging
+
+Use tools like `winston`, `morgan`, or integrate with cloud log systems:
+
+```bash
+npm install winston
+```
+
+### ✅ Monitor and Alert
+
+Use services like Prometheus, Grafana, or DataDog to monitor performance and uptime.
+
+### ✅ Data Validation Schemas
+
+Use `Joi`, `Zod`, or `Yup` to define clear data validation rules for APIs.
+
+---
