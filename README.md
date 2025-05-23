@@ -210,4 +210,3 @@ const port = process.env.PORT;
 
 ---
 
-Feel free to copy this README to your GitHub repo to ensure consistency in your API design!
